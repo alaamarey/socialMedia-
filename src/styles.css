@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer components {
+  .post-btn {
+    @apply cursor-pointer rounded-md py-1 px-5 border  bg-blue-700 text-white;
+  }
+
+  .input {
+    @apply bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg  block w-full p-2.5  focus:border-b-gray-400    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white;
+  }
+
+  .label {
+    @apply block mt-5 text-sm font-medium text-gray-900 dark:text-white;
+  }
+
+  .form-btn {
+    @apply cursor-pointer mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
+  }
+}

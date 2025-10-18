@@ -1,0 +1,9 @@
+<section>
+  <div class="bg-white p-5 my-3 rounded-lg w-[70%] mx-auto dark:bg-gray-500">
+    <post [post]="post()" [canModify]="true" [isPostDetails]="true"></post>
+
+    @for ( comment of comments().reverse(); track comment._id ) {
+    <comments [comment]="comment"> </comments>
+    }
+  </div>
+</section>

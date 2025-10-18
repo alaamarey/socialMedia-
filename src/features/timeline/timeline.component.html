@@ -1,0 +1,18 @@
+<createpost></createpost>
+
+<div>
+  <div
+    style="overflow: auto"
+    class="my-2 rounded"
+    infiniteScroll
+    [infiniteScrollDistance]="30"
+    [infiniteScrollThrottle]="1000"
+    (scrolled)="onScrollDown()"
+  >
+    @for ( post of posts() ; track post._id) {
+    <div class="bg-white p-5 my-3 rounded-lg w-[70%] mx-auto dark:bg-gray-500">
+      <post [post]="post"></post>
+    </div>
+    }
+  </div>
+</div>

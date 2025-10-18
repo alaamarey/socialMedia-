@@ -1,0 +1,137 @@
+<section class="my-10">
+  <h1 class="text-center text-4xl font-bold text-sky-600">Lonked Posts</h1>
+
+  <form
+    class="w-[50%] mx-auto my-5 rounded-lg p-5 bg-white px-5"
+    [formGroup]="signupForm()"
+    (ngSubmit)="submitForm()"
+  >
+    <!-- name -->
+    <app-input
+      [control]="signupForm().get('name')"
+      [id]="'name'"
+      [type]="'text'"
+      [label]="'Name'"
+    ></app-input>
+
+    <!-- email  -->
+    <app-input
+      [control]="signupForm().get('email')"
+      [id]="'email'"
+      [type]="'email'"
+      [label]="'Email'"
+    ></app-input>
+
+    <!-- password -->
+    <app-input
+      [control]="signupForm().get('password')"
+      [id]="'password'"
+      [label]="'Password'"
+    >
+      <li>
+        Password must has At least one uppercase letter(A–Z),least one lowercase
+        letter (a–z),least one digit (0–9), least one special character
+        (#?!@$%^&*-) &&At least 8 characters total
+      </li>
+    </app-input>
+
+    <!-- rePassword -->
+    <app-input
+      [control]="signupForm().get('rePassword')"
+      [id]="'rePassword'"
+      [label]="'rePassword'"
+    ></app-input>
+
+    <!-- dateOfBirth -->
+    <app-input
+      [control]="signupForm().get('dateOfBirth')"
+      [id]="'dateOfBirth'"
+      [type]="'date'"
+      [label]="'DateOfBirth'"
+    >
+      <li>Enter a valid date (YYYY-MM-DD).</li>
+    </app-input>
+
+    <!-- gender -->
+    <div>
+      @let gender = signupForm().get('gender') ;
+      <label for="gender" class="label"> Gender</label>
+      <select
+        formControlName="gender"
+        id="gender"
+        class="input"
+        [class]="{
+          'border-green-400': gender?.valid,
+          'border-red-400': gender?.invalid && gender?.touched
+        }"
+      >
+        <option value="" selected>-- Select Gender --</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      @if( gender?.invalid && gender?.touched ) {
+      <li
+        class="mt-5 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        role="alert"
+      >
+        <svg
+          class="shrink-0 inline w-4 h-4 me-3"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+          />
+        </svg>
+
+        <div>
+          <span class="font-medium"></span>
+          <li>Gender is required !</li>
+        </div>
+      </li>
+      }
+    </div>
+
+    @if( errorMsg() ) {
+    <li
+      class="mt-5 flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+      role="alert"
+    >
+      <svg
+        class="shrink-0 inline w-4 h-4 me-3"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+        />
+      </svg>
+
+      <div>
+        <span class="font-medium"></span>
+        <li class="font-bold text-xl" >{{ errorMsg() }}</li>
+      </div>
+    </li>
+
+    }
+
+    <button type="submit" class="form-btn">
+      Register @if( loading() ){
+      <i class="fa-solid fa-circle-notch fa-spin"></i>
+      }
+    </button>
+
+    <p class="text-center mt-5">
+      already have account<span
+        routerLink="/login"
+        class="cursor-pointer text-sky-600 underline font-black"
+      >
+        Sign In
+      </span>
+    </p>
+  </form>
+</section>

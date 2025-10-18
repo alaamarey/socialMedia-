@@ -1,0 +1,120 @@
+<div class="bg-gray-100 rounded-lg p-5 my-2 dark:bg-gray-600">
+  <div class="flex justify-between">
+    <div class="flex gap-x-4">
+      <img
+        [src]="
+          comment().commentCreator.photo.includes('undefined')
+            ? './noprofileimage.jpg'
+            : comment().commentCreator.photo
+        "
+        class="size-[30px] rounded-full"
+        [alt]="comment().commentCreator.name"
+      />
+
+      <div>
+        <p class="leading-3 text-lg">{{ comment().commentCreator.name }}</p>
+        <span class="text-sm">
+          {{ comment().createdAt | date : "mediumDate" }}</span
+        >
+      </div>
+    </div>
+
+    <div data-dial-init class="relative">
+      @if( comment().commentCreator._id === userId() ) { @if( showList() ){
+      <div
+        id="speed-dial-menu-dropdown-alternative"
+        class="bg-white w-50 absolute top-[5%] start-[130%] py-1 mb-3 space-y-2 border border-gray-100 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600"
+      >
+        <ul class="text-sm text-gray-500 dark:text-gray-300">
+          <li>
+            <a
+              (click)="showTextArea.set(true)"
+              class="cursor-pointer flex items-center px-5 py-2 border-b border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-gray-900 dark:hover:text-white dark:border-gray-600"
+            >
+              <svg
+                class="w-3.5 h-3.5 me-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 18"
+              >
+                <path
+                  d="M18 0H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.707.707L10.414 13H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5 4h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5 4h5a1 1 0 1 1 0 2H5a1 1 0 0 1 0-2Zm2 5H5a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Zm9 0h-6a1 1 0 0 1 0-2h6a1 1 0 1 1 0 2Z"
+                />
+              </svg>
+              <p class="text-sm font-medium grow">update comment</p>
+            </a>
+          </li>
+
+          <li>
+            <a
+              (click)="deleteComment(comment()._id)"
+              class="cursor-pointer flex items-center px-5 py-2 border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-gray-900 dark:hover:text-white dark:border-gray-600"
+            >
+              <svg
+                class="w-3.5 h-3.5 me-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 18"
+              >
+                <path
+                  d="M18 0H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.707.707L10.414 13H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5 4h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5 4h5a1 1 0 1 1 0 2H5a1 1 0 0 1 0-2Zm2 5H5a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Zm9 0h-6a1 1 0 0 1 0-2h6a1 1 0 1 1 0 2Z"
+                />
+              </svg>
+
+              <p class="text-sm font-medium grow">delete comment</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+      }
+      <button
+        (click)="showList.set(!showList())"
+        type="button"
+        data-dial-toggle="speed-dial-menu-dropdown-alternative"
+        aria-controls="speed-dial-menu-dropdown-alternative"
+        aria-expanded="false"
+        class="cursor-pointer flex items-center justify-center ml-auto text-gray-500"
+      >
+        <svg
+          class="w-6 h-6"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 16 3"
+        >
+          <path
+            d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"
+          />
+        </svg>
+        <span class="sr-only">Open actions menu</span>
+      </button>
+      }
+    </div>
+  </div>
+
+  <p #commentText>
+    {{ comment().content }}
+  </p>
+
+  @if( showTextArea() ){
+  <div
+    #textarea
+    class="mt-2 bg-gray-200 p-2 rounded-lg text-center dark:bg-gray-400"
+  >
+    <textarea
+      [formControl]="commentContent()"
+      name=""
+      id="updateComment"
+      class="w-full rounded-lg resize-none focus:border-transparent dark:bg-gray-300"
+    ></textarea>
+    <button
+      class="post-btn dark:bg-black dark:text-white"
+      (click)="updateComment(comment()._id)"
+    >
+      Save
+    </button>
+  </div>
+  }
+</div>
