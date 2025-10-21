@@ -1,5 +1,8 @@
 <section class="my-20">
-  <form class="w-[50%] mx-auto bg-white px-4 pt-7 rounded-lg" (submit)="updateFile($event)" >
+  <form
+    class="w-[95%] md:w-[70%] mx-auto bg-white px-4 pt-7 rounded-lg"
+    (submit)="updateFile($event)"
+  >
     <textarea
       [formControl]="postContent()"
       rows="8"

@@ -9,7 +9,7 @@
       'border-red-400': control().invalid && control().touched
     }"
     [formControl]="control()"
-    [type]="type() || showPassword() ? 'text' : 'password'"
+    [type]="type() || (showPassword() ? 'text' : 'password')"
     [id]="id()"
     class="input"
   />
