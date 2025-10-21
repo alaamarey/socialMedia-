@@ -33,14 +33,10 @@ export class CreatepostComponent implements AfterViewInit {
   private modal: WritableSignal<Modal | null> = signal<Modal | null>(null);
 
 
-
-
   ngAfterViewInit(): void {
     if (this.modalElement())
       this.modal.set(new Modal(this.modalElement().nativeElement));
   }
-
-
 
 
 
@@ -68,19 +64,23 @@ export class CreatepostComponent implements AfterViewInit {
     const post = (e.submitter as HTMLButtonElement).value;
     const close = (e.submitter as HTMLButtonElement).value;
 
-    if (this.contentControl().valid) {
-      // formdata اعمل ال
-      console.log(this.contentControl().value);
-      console.log(this.saveFile());
 
+    console.log(close);
 
-      const formData = new FormData();
-      formData.append('body', this.contentControl().value)
-      if (this.saveFile())
-        formData.append('image', this.saveFile() as File)
+    if (close === 'close') {
+      this.closeModal();
+    }
+    else if (post === 'post') {
+      if (this.contentControl().valid) {
+        // formdata اعمل ال
+        console.log(this.contentControl().value);
+        console.log(this.saveFile());
+        const formData = new FormData();
+        formData.append('body', this.contentControl().value)
+        if (this.saveFile())
+          formData.append('image', this.saveFile() as File)
 
-      // اكلم API      
-      if (post === 'post') {
+        // اكلم API      
         this.postsService.createPost(formData).subscribe({
           next: (res => {
             console.log(res);
@@ -94,13 +94,13 @@ export class CreatepostComponent implements AfterViewInit {
               this.imageSrc.set('');
             }
           })
-        })
+        }
+
+        )
       }
-      else if (close === 'close') {
-        // modal  اقفل ال 
-        this.closeModal();
-      }
+
     }
+
   }
 
 
