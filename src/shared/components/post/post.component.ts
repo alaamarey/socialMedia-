@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, input, InputSignal, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommentsService } from '../../services/comments.service';
 import { PostsService } from '../../services/posts.service';
 import { CommentsComponent } from "./components/comments/comments.component";
@@ -9,6 +9,8 @@ import { CreatecommentComponent } from "./components/createcomment/createcomment
 import { Comment } from './components/createcomment/models/commentres.interface';
 import { Post } from './model/postres.interface';
 import { UsersService } from '../../../core/auth/services/users.service';
+import Swal from 'sweetalert2';
+import { SweetalertService } from '../../services/sweetalert.service';
 
 
 @Component({
@@ -21,6 +23,8 @@ export class PostComponent implements OnInit {
   private readonly postsService = inject(PostsService);
   private readonly commentsService = inject(CommentsService);
   private readonly usersService = inject(UsersService);
+  private readonly router = inject(Router);
+  private readonly sweetalertService = inject(SweetalertService);
 
 
 
@@ -31,19 +35,18 @@ export class PostComponent implements OnInit {
   commentContent: WritableSignal<FormControl> = signal<FormControl>(new FormControl('', [Validators.required]));
   canModify: InputSignal<boolean> = input<boolean>(false);
   isPostDetails: InputSignal<boolean> = input<boolean>(false);
-
   userId: WritableSignal<string | undefined> = signal('')
+
 
   ngOnInit(): void {
     this.userId.set(this.usersService.decodeToken()?.user);
   }
 
 
-
   getAllPosts(): void {
     this.postsService.getAllPosts().subscribe({
       next: (res => {
-        this.postsService.postList.set(res.posts);
+        this.postsService.posts.set(res.posts);
       })
     })
   }
@@ -65,7 +68,13 @@ export class PostComponent implements OnInit {
 
 
 
-
+  getUserPosts() {
+    this.postsService.getUserPosts().subscribe({
+      next: (response => {
+        this.postsService.posts.set(response.posts);
+      })
+    })
+  }
 
   deleteComment(commentId: string) {
     this.comments.update(old => old.filter(c => c._id !== commentId));
@@ -78,5 +87,26 @@ export class PostComponent implements OnInit {
 
   deletePost(postId: string) {
 
+    this.sweetalertService.confirm('delete this item', () => {
+
+      this.postsService.deletePost(postId).subscribe({
+        next: (response => {
+          console.log(response);
+          if (response.message === 'success') {
+            this.getUserPosts()
+          }
+        })
+      })
+    })
+
+
+
+
+
   }
+
+
+
+
+
 }

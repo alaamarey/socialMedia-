@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CreatepostComponent } from "../../shared/components/createpost/createpost.component";
@@ -18,9 +18,9 @@ export class TimelineComponent implements OnInit {
 
 
   posts: WritableSignal<Post[]> = signal<Post[]>([]);
+  // posts = computed<Post[]>( () => this.postsService.allPosts() );
   paginationInfo: WritableSignal<PaginationInfo> = signal<PaginationInfo>({} as PaginationInfo);
   comments = signal<Comment[]>([]);
-
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(
@@ -29,9 +29,8 @@ export class TimelineComponent implements OnInit {
         this.posts.set(data.posts);
         this.paginationInfo.set(data.paginationInfo);
       })
-
-
   }
+
 
 
   getAllPosts(pageNumber: number): void {

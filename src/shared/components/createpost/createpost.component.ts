@@ -22,7 +22,7 @@ export class CreatepostComponent implements AfterViewInit {
 
 
   contentControl: WritableSignal<FormControl> = signal<FormControl>
-    (new FormControl(null, [Validators.required]));
+    (new FormControl(' '));
 
   modalElement: Signal<ElementRef> = viewChild.required<ElementRef>('createPost');
 
@@ -60,48 +60,48 @@ export class CreatepostComponent implements AfterViewInit {
 
   submitForm(e: SubmitEvent) {
     e.preventDefault();
-
     const post = (e.submitter as HTMLButtonElement).value;
     const close = (e.submitter as HTMLButtonElement).value;
-
-
     console.log(close);
 
     if (close === 'close') {
       this.closeModal();
     }
     else if (post === 'post') {
-      if (this.contentControl().valid) {
-        // formdata اعمل ال
-        console.log(this.contentControl().value);
-        console.log(this.saveFile());
-        const formData = new FormData();
-        formData.append('body', this.contentControl().value)
-        if (this.saveFile())
-          formData.append('image', this.saveFile() as File)
 
-        // اكلم API      
-        this.postsService.createPost(formData).subscribe({
-          next: (res => {
-            console.log(res);
+      // formdata اعمل ال
+      console.log(this.contentControl().value);
+      console.log(this.saveFile());
+      const formData = new FormData();
+      formData.append('body', this.contentControl().value)
+      if (this.saveFile())
+        formData.append('image', this.saveFile() as File)
 
-            if (res.message === 'success') {
-              // modal  اقفل ال 
-              this.toastrService.success('Post Saved Successfully', 'LinkedPOsts')
-              this.closeModal();
-              this.contentControl().reset();
-              this.saveFile.set('');
-              this.imageSrc.set('');
-            }
-          })
-        }
+      // اكلم API      
+      this.postsService.createPost(formData).subscribe({
+        next: (res => {
+          console.log(res);
 
-        )
+          if (res.message === 'success') {
+            this.getUserPosts();
+
+            // modal  اقفل ال 
+            this.toastrService.success('Post Saved Successfully', 'LinkedPOsts', {
+              positionClass: 'toast-top-center'
+            })
+            this.closeModal();
+            this.contentControl().reset();
+            this.saveFile.set('');
+            this.imageSrc.set('');
+          }
+        })
       }
 
+      )
     }
 
   }
+
 
 
   openModal(): void {
@@ -113,6 +113,13 @@ export class CreatepostComponent implements AfterViewInit {
   }
 
 
+  getUserPosts() {
+    this.postsService.getUserPosts().subscribe({
+      next: (response => {
+        this.postsService.posts.set(response.posts);
+      })
+    })
+  }
 
 
 

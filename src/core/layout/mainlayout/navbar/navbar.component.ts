@@ -54,24 +54,41 @@ export class NavbarComponent implements OnInit {
     const upload = (e.submitter as HTMLButtonElement).value;
     const decline = (e.submitter as HTMLButtonElement).value;
 
-
-    if (upload === 'upload') {
-      const formData = new FormData();
-      formData.append('photo', this.updatePhoto());
-      console.log(this.updatePhoto());
-
-      this.usersService.uploadProfilePhote(formData).subscribe(response => {
-        if (response.message === 'success') {
-          // template اعدل علي 
-          this.getLoggedUserData();
-          this.closeModal();
-          console.log(response);
-        }
-      })
-    } else if (decline === 'decline') {
+    if (decline === 'decline') {
       this.closeModal();
     }
+
+
+    else if (upload === 'upload') {
+      const formData = new FormData();
+      formData.append('photo', this.updatePhoto());
+
+      if (this.updatePhoto()) {
+        console.log(this.updatePhoto());
+        this.usersService.uploadProfilePhote(formData).subscribe(response => {
+          if (response.message === 'success') {
+            // template اعدل علي 
+            this.getLoggedUserData();
+            this.closeModal();
+            console.log(response);
+          }
+        })
+      }
+      else {
+        this.closeModal()
+      }
+
+
+    }
   }
+
+
+
+
+
+
+
+
 
   getLoggedUserData(): void {
     this.usersService.getLoggedUserData().subscribe(response => {

@@ -1,4 +1,6 @@
-@for ( post of posts() ; track post._id ) {
+<createpost></createpost>
+
+@for ( post of posts().reverse() ; track post._id ) {
 <div
   class="w-[95%] bg-white p-5 my-3 rounded-lg md:w-[70%] mx-auto dark:bg-gray-400"
 >

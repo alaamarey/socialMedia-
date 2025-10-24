@@ -43,9 +43,10 @@
               }
             ],
             "styles": [
-              "src/styles.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "node_modules/ngx-spinner/animations/ball-clip-rotate.css"
+              "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
+              "src/styles.css",
+              "node_modules/ngx-toastr/toastr.css"
             ]
           },
           "configurations": {
@@ -104,7 +105,7 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css", "node_modules/ngx-toastr/toastr.css"]
+            "styles": ["src/styles.css"]
           }
         }
       }

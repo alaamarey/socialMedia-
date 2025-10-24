@@ -75,8 +75,6 @@ export class UpdatepostComponent {
       console.log(this.postContent().value);
       console.log(this.postFile());
 
-
-
       const formData = new FormData();
 
 
