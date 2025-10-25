@@ -13,7 +13,12 @@ export class SweetalertService {
       showCancelButton: true,
       confirmButtonText: 'Yes',
     }).then((result) => {
-      if (result.isConfirmed) callback();
+      if (result.isConfirmed) {
+        callback();
+        setTimeout(() => {
+          Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        }, 1500)
+      }
       else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire('Cancelled', 'Your file is safe 🙂', 'error');
       }
@@ -21,3 +26,5 @@ export class SweetalertService {
   }
 
 }
+
+

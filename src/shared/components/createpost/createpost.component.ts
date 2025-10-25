@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, ElementRef, inject, Signal, signal, viewChild, WritableSignal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Modal } from 'flowbite';
-import { PostsService } from '../../services/posts.service';
 import { ToastrService } from 'ngx-toastr';
+import { UsersService } from '../../../core/auth/services/users.service';
+import { PostsService } from '../../services/posts.service';
 @Component({
   selector: 'createpost',
   imports: [ReactiveFormsModule],
@@ -13,16 +14,11 @@ export class CreatepostComponent implements AfterViewInit {
 
   private readonly postsService = inject(PostsService);
   private readonly toastrService = inject(ToastrService);
-
-
-
-
-
-
+  // private readonly usersService = inject(UsersService);
 
 
   contentControl: WritableSignal<FormControl> = signal<FormControl>
-    (new FormControl(' '));
+    (new FormControl(" "));
 
   modalElement: Signal<ElementRef> = viewChild.required<ElementRef>('createPost');
 
@@ -30,7 +26,13 @@ export class CreatepostComponent implements AfterViewInit {
 
   saveFile: WritableSignal<File | string> = signal<File | string>('');
 
+  userId = signal<string>('');
+  userName = signal<string>('');
+  userPhoto = signal({});
+
   private modal: WritableSignal<Modal | null> = signal<Modal | null>(null);
+
+
 
 
   ngAfterViewInit(): void {
@@ -39,6 +41,16 @@ export class CreatepostComponent implements AfterViewInit {
   }
 
 
+
+  // getLoggedUserData() {
+  //   this.usersService.getLoggedUserData().subscribe({
+  //     next: (response => {
+  //       this.userId.set(response.user._id);
+  //       this.userName.set(response.user.name);
+  //       this.userPhoto.set(response.user.photo);
+  //     })
+  //   })
+  // }
 
   changeFile(e: Event): void {
     const inputElement = e.target as HTMLInputElement;
@@ -56,8 +68,6 @@ export class CreatepostComponent implements AfterViewInit {
 
   }
 
-
-
   submitForm(e: SubmitEvent) {
     e.preventDefault();
     const post = (e.submitter as HTMLButtonElement).value;
@@ -72,20 +82,44 @@ export class CreatepostComponent implements AfterViewInit {
       // formdata اعمل ال
       console.log(this.contentControl().value);
       console.log(this.saveFile());
+
       const formData = new FormData();
       formData.append('body', this.contentControl().value)
       if (this.saveFile())
         formData.append('image', this.saveFile() as File)
-
       // اكلم API      
       this.postsService.createPost(formData).subscribe({
         next: (res => {
           console.log(res);
-
           if (res.message === 'success') {
             this.getUserPosts();
 
-            // modal  اقفل ال 
+            // const createPost = {
+            //   _id: Date.now(),
+            //   body: this.contentControl(),
+            //   user: {
+            //     _id: this.userId(),
+            //     name: this.userName(),
+            //     photo: this.userPhoto()
+            //   },
+            //   createdAt: Date.now(),
+            //   comments: {
+            //   },
+            //   id: Date.now(),
+            //   image: this.saveFile()
+            // }
+
+
+
+
+
+
+
+
+            // this.postsService.addNewPost(createPost);
+
+
+            // modal  اقفل ال
             this.toastrService.success('Post Saved Successfully', 'LinkedPOsts', {
               positionClass: 'toast-top-center'
             })

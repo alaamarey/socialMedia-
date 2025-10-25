@@ -19,7 +19,7 @@ export class CreatecommentComponent {
 
   content: WritableSignal<FormControl> = signal<FormControl>(new FormControl(null, [Validators.required, Validators.maxLength(30)]));
   postId: InputSignal<string | null> = input.required<string | null>();
-  errorMsg: WritableSignal<string> = signal<string>('');
+  // errorMsg: WritableSignal<string> = signal<string>('');
 
 
 
@@ -35,9 +35,6 @@ export class CreatecommentComponent {
               this.content().reset();
               this.newComments.emit(response.comments);
             }
-          }), error: (error => {
-            console.log(error);
-            this.errorMsg.set(error.error.error)
           })
         }
       )

@@ -12,7 +12,7 @@ export class PostsService {
   private readonly httpClient = inject(HttpClient);
 
   posts: WritableSignal<Post[]> = signal<Post[]>([]);
-  // allPosts : WritableSignal<Post[]> = signal<Post[]>([]); 
+  allPosts: WritableSignal<Post[]> = signal<Post[]>([]);
 
 
 
@@ -20,6 +20,14 @@ export class PostsService {
   createPost(body: object): Observable<{ message: string }> {
     return this.httpClient.post<{ message: string }>(environment.baseURL + 'posts', body);
   }
+
+
+
+  addNewPost(newPost: any): void {
+    this.allPosts.update(posts => [newPost, ...this.allPosts()]);
+  }
+
+
 
 
   getAllPosts(pageNumber: number = 1): Observable<Postres> {

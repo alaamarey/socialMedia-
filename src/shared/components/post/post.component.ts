@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { Component, inject, input, InputSignal, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -10,12 +10,12 @@ import { Comment } from './components/createcomment/models/commentres.interface'
 import { Post } from './model/postres.interface';
 import { UsersService } from '../../../core/auth/services/users.service';
 import Swal from 'sweetalert2';
-import { SweetalertService } from '../../services/sweetalert.service';
+import { SweetalertService } from './service/sweetalert.service';
 
 
 @Component({
   selector: 'post',
-  imports: [DatePipe, CommentsComponent, RouterLink, CreatecommentComponent, ReactiveFormsModule],
+  imports: [DatePipe, CommentsComponent, RouterLink, CreatecommentComponent, ReactiveFormsModule, JsonPipe],
   templateUrl: './post.component.html',
   styleUrl: './post.component.css'
 })
@@ -66,8 +66,6 @@ export class PostComponent implements OnInit {
     this.getPostComments(this.post().id);
   }
 
-
-
   getUserPosts() {
     this.postsService.getUserPosts().subscribe({
       next: (response => {
@@ -86,9 +84,7 @@ export class PostComponent implements OnInit {
 
 
   deletePost(postId: string) {
-
     this.sweetalertService.confirm('delete this item', () => {
-
       this.postsService.deletePost(postId).subscribe({
         next: (response => {
           console.log(response);
@@ -98,9 +94,6 @@ export class PostComponent implements OnInit {
         })
       })
     })
-
-
-
 
 
   }
