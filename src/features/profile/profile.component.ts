@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   // posts: WritableSignal<Post[]> = signal<Post[]>([]);
 
-  posts = computed(() => this.postsService.posts());
+  posts = computed(() => this.postsService.userposts());
 
   ngOnInit(): void {
     // this.activatedRoute.data  Subject Behavior 
@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 
     this.activatedRoute.data.subscribe(response => {
-      this.postsService.posts.set(response['profile']);
+      this.postsService.userposts.set(response['profile']);
 
       // this.posts.set(response['profile']);
     })

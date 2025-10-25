@@ -7,14 +7,12 @@
           [alt]="post().user.name"
           class="size-10 rounded-full"
         />
-
         <div>
           <h3 class="leading-3">{{ post().user.name }}</h3>
           <span> {{ post().createdAt | date : "mediumDate" }} </span>
         </div>
       </div>
     </div>
-    <!-- <ng-content></ng-content> -->
 
     @if( post().user._id === userId() ) {
     <div data-dial-init class="relative">
@@ -43,6 +41,7 @@
               <p
                 [routerLink]="['/updatepost', post().id]"
                 class="text-sm font-medium grow"
+                (click)="showList.set(false)"
               >
                 Update Post
               </p>
@@ -51,6 +50,7 @@
 
           <li>
             <a
+              (click)="showList.set(false)"
               class="cursor-pointer flex items-center px-5 py-2 border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-gray-900 dark:hover:text-white dark:border-gray-600"
             >
               <i class="fa-solid fa-trash"></i>

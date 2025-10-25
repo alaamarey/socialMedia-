@@ -1,8 +1,9 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AfterViewInit, Component, inject, signal, WritableSignal } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { PostsService } from '../../../../services/posts.service';
 import { Post } from '../../model/postres.interface';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-updatepost',
@@ -10,27 +11,25 @@ import { Post } from '../../model/postres.interface';
   templateUrl: './updatepost.component.html',
   styleUrl: './updatepost.component.css'
 })
-export class UpdatepostComponent {
+export class UpdatepostComponent implements AfterViewInit {
 
 
   private readonly postsService = inject(PostsService);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly router = inject(Router);
+  private readonly location = inject(Location);
 
 
   postId: WritableSignal<string | null> = signal('');
-
-  postContent = signal<FormControl>(new FormControl('', [Validators.required]));
+  postContent = signal<FormControl>(new FormControl(' '));
   postFile = signal<File | null>(null);
   imgSrc = signal<string | ArrayBuffer | null | File>('');
-
   oldFile = signal<string>('');
 
 
 
 
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.activatedRoute.data.subscribe({
       next: (response => {
         console.log(response['updatepost']);
@@ -56,11 +55,11 @@ export class UpdatepostComponent {
 
   changeFile(inputElement: HTMLInputElement): void {
     this.postFile.set(inputElement.files ? inputElement.files[0] : null);
-
     console.log(this.postFile());
     const reader = new FileReader();
     if (this.postFile()) {
       reader.readAsDataURL(this.postFile() as File);
+
       reader.onload = () => {
         this.imgSrc.set(reader.result);
       }
@@ -70,47 +69,46 @@ export class UpdatepostComponent {
 
   updateFile(e: Event): void {
     e.preventDefault()
-    if (this.postContent().valid) {
 
-      console.log(this.postContent().value);
-      console.log(this.postFile());
-
-      const formData = new FormData();
+    console.log(this.postContent().value);
+    console.log(this.postFile());
 
 
-      formData.append('body', this.postContent().value);
-      if (this.postFile()) {
+    const formData = new FormData();
+    formData.append('body', this.postContent().value);
+    if (this.postFile()) {
+      formData.append('image', this.postFile() as File);
+    }
+    else {
+      this.urlToFile(this.oldFile(), 'OldFile').then((oldFile) => {
+        this.postFile.set(oldFile);
         formData.append('image', this.postFile() as File);
-      }
-
-      else {
-        this.urlToFile(this.oldFile(), 'OldFile').then((oldFile) => {
-          this.postFile.set(oldFile);
-          formData.append('image', this.postFile() as File);
-        })
-      }
-
-
-
-      this.postsService.updatePost(this.postId(), formData).subscribe({
-        next: (res => {
-          console.log(res);
-
-          this.activatedRoute.params.subscribe(params => {
-            console.log(params);
-
-          })
-
-          this.router.navigate(['profile'])
-        })
       })
     }
+
+
+
+    this.postsService.updatePost(this.postId(), formData).subscribe({
+      next: (res => {
+        console.log(res);
+
+        this.activatedRoute.params.subscribe(params => {
+          console.log(params);
+
+          this.location.back();
+
+        })
+
+      })
+    })
   }
 
 
+
+  // convert url to flie 
   async urlToFile(url: string, filename: string): Promise<File> {
-    const response = await fetch(url);
-    const blob = await response.blob();
+    const response = await fetch(url); // download file from network 
+    const blob = await response.blob(); // contains the file’s content but not its name.
     return new File([blob], filename, { type: blob.type });
   }
 

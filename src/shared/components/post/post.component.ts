@@ -1,15 +1,14 @@
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Component, inject, input, InputSignal, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { UsersService } from '../../../core/auth/services/users.service';
 import { CommentsService } from '../../services/comments.service';
 import { PostsService } from '../../services/posts.service';
 import { CommentsComponent } from "./components/comments/comments.component";
 import { CreatecommentComponent } from "./components/createcomment/createcomment.component";
 import { Comment } from './components/createcomment/models/commentres.interface';
 import { Post } from './model/postres.interface';
-import { UsersService } from '../../../core/auth/services/users.service';
-import Swal from 'sweetalert2';
 import { SweetalertService } from './service/sweetalert.service';
 
 
@@ -46,7 +45,7 @@ export class PostComponent implements OnInit {
   getAllPosts(): void {
     this.postsService.getAllPosts().subscribe({
       next: (res => {
-        this.postsService.posts.set(res.posts);
+        this.postsService.userposts.set(res.posts);
       })
     })
   }
@@ -69,7 +68,7 @@ export class PostComponent implements OnInit {
   getUserPosts() {
     this.postsService.getUserPosts().subscribe({
       next: (response => {
-        this.postsService.posts.set(response.posts);
+        this.postsService.userposts.set(response.posts);
       })
     })
   }

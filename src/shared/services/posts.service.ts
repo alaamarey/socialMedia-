@@ -11,8 +11,8 @@ export class PostsService {
 
   private readonly httpClient = inject(HttpClient);
 
-  posts: WritableSignal<Post[]> = signal<Post[]>([]);
-  allPosts: WritableSignal<Post[]> = signal<Post[]>([]);
+  userposts: WritableSignal<Post[]> = signal<Post[]>([]);
+  //allPosts: WritableSignal<Post[]> = signal<Post[]>([]);
 
 
 
@@ -23,9 +23,9 @@ export class PostsService {
 
 
 
-  addNewPost(newPost: any): void {
-    this.allPosts.update(posts => [newPost, ...this.allPosts()]);
-  }
+  // addNewPost(newPost: any): void {
+  //   this.allPosts.update(posts => [newPost, ...this.allPosts()]);
+  // }
 
 
 

@@ -6,18 +6,16 @@ import { Postres } from '../../shared/components/post/model/postres.interface';
 
 export const postsResolver: ResolveFn<Observable<Postres>> = (route, state) => {
 
-  const postsService = inject(PostsService);
+   const postsService = inject(PostsService);
+   (postsService.getAllPosts().subscribe(res => {
+      console.log(res);
+   }))
 
 
-  (postsService.getAllPosts().subscribe(res => {
-  console.log(res);
-  }))
-  
-  
 
-  return postsService.getAllPosts().pipe( 
-     map(  (response) => response ))
-  };
+   return postsService.getAllPosts().pipe(
+      map((response) => response))
+};
 
 
 

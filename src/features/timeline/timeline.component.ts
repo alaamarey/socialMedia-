@@ -16,10 +16,8 @@ export class TimelineComponent implements OnInit {
   private readonly postsService = inject(PostsService);
   private readonly activatedRoute = inject(ActivatedRoute);
 
-
-  // posts: WritableSignal<Post[]> = signal<Post[]>([]);
-  posts = computed<Post[]>(() => this.postsService.allPosts());
-
+  posts: WritableSignal<Post[]> = signal<Post[]>([]);
+  // posts = computed<Post[]>(() => this.postsService.allPosts());
   paginationInfo: WritableSignal<PaginationInfo> = signal<PaginationInfo>({} as PaginationInfo);
   comments = signal<Comment[]>([]);
 
@@ -27,9 +25,8 @@ export class TimelineComponent implements OnInit {
     this.activatedRoute.data.subscribe(
       response => {
         const data = response['timeline'] as Postres;
-        //this.posts.set(data.posts);
-        this.postsService.allPosts.set(data.posts);
-
+        this.posts.set(data.posts);
+        // this.postsService.allPosts.set(data.posts);
         this.paginationInfo.set(data.paginationInfo);
       })
   }
@@ -38,19 +35,11 @@ export class TimelineComponent implements OnInit {
   getAllPosts(pageNumber: number): void {
     this.postsService.getAllPosts(pageNumber).subscribe(response => {
       if (response.message === 'success')
-        //this.posts.set([...this.posts(), ...response.posts]);
-
-        this.postsService.allPosts.set([...this.posts(), ...response.posts]);
+        this.posts.set([...this.posts(), ...response.posts]);
+      //this.postsService.allPosts.set([...this.posts(), ...response.posts]);
       this.paginationInfo.set(response.paginationInfo);
     });
   }
-
-
-
-
-
-
-
 
 
   onScrollDown() {
