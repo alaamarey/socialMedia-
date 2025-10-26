@@ -17,7 +17,9 @@ export class CreatecommentComponent {
 
 
 
-  content: WritableSignal<FormControl> = signal<FormControl>(new FormControl(null, [Validators.required, Validators.maxLength(30)]));
+  content: WritableSignal<FormControl> = signal<FormControl>
+    (new FormControl(null, [Validators.required, Validators.maxLength(30)]));
+
   postId: InputSignal<string | null> = input.required<string | null>();
   // errorMsg: WritableSignal<string> = signal<string>('');
 

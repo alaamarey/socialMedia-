@@ -40,12 +40,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       // this.posts.set(response['profile']);
     })
-
-
-
-
-
-
   }
 
 

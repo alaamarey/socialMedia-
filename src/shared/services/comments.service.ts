@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Commentres , Comment} from '../components/post/components/createcomment/models/commentres.interface';
+import { Commentres, Comment } from '../components/post/components/createcomment/models/commentres.interface';
+import { API_URL } from '../../token/token_ApI_URL';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,10 @@ export class CommentsService {
 
 
   private readonly httpClient = inject(HttpClient);
+  private readonly API_URL = inject(API_URL);
 
 
-  comments = signal<Comment[]>([]); 
+  comments = signal<Comment[]>([]);
 
 
 
@@ -24,7 +26,7 @@ export class CommentsService {
 
 
   createComment(body: object): Observable<Commentres> {
-    return this.httpClient.post<Commentres>(environment.baseURL + 'comments', body);
+    return this.httpClient.post<Commentres>(this.API_URL + 'comments', body);
   }
 
 
@@ -37,22 +39,22 @@ export class CommentsService {
 
 
 
-  
 
-  updateComment( commentId  : string , body: object   ): Observable<{message:string , comment :Comment}  > {
-    return this.httpClient.put<{message:string , comment :Comment}>(environment.baseURL + `comments/${commentId}`, body); 
-  } 
+
+  updateComment(commentId: string, body: object): Observable<{ message: string, comment: Comment }> {
+    return this.httpClient.put<{ message: string, comment: Comment }>(this.API_URL + `comments/${commentId}`, body);
+  }
 
 
   deleteComment(commentId: string): Observable<any> {
-    return this.httpClient.delete(environment.baseURL + `comments/${commentId}`);
+    return this.httpClient.delete(this.API_URL + `comments/${commentId}`);
   }
 
 
 
 
-  getPostComment(postId :string): Observable<any> {
-    return this.httpClient.get( environment.baseURL + `posts/${postId}/comments` )
+  getPostComment(postId: string): Observable<any> {
+    return this.httpClient.get(this.API_URL + `posts/${postId}/comments`)
   }
 
 }
