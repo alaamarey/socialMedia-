@@ -24,5 +24,44 @@ Injection Token for global configuration and dependency customization
 
 Angular Router for modular and lazy-loaded routes
 
+---
+
+💡 Project Description
+---
+
+The application allows users to:
+
+Register and log in securely
+
+Create, edit, and delete posts in real time
+
+React to posts and view updates instantly using Angular Signals
+
+Receive instant success or error messages via ngx-toastr
+
+View confirmation dialogs before deleting posts using SweetAlert2
+
+Browse posts efficiently through ngx-pagination
+
+Enjoy a secure experience where only authenticated users can access certain routes
+
+---
+🚀 Key Features
+---
+🧠 1. Signals for Reactive State
+
+Instead of relying solely on RxJS or Services with BehaviorSubject, the project uses Angular Signals to manage post state:
+``bash 
+        posts = signal<Post[]>([]);
+         addPost(newPost: Post) {
+               this.posts.update((current) => [newPost, ...current]);
+              }
+
+
+
+
+
+
+
 
 
