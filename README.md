@@ -49,13 +49,33 @@ Enjoy a secure experience where only authenticated users can access certain rout
 🚀 Key Features
 ---
 🧠 1. Signals for Reactive State
-
 Instead of relying solely on RxJS or Services with BehaviorSubject, the project uses Angular Signals to manage post state:
-``bash 
-        posts = signal<Post[]>([]);
-         addPost(newPost: Post) {
-               this.posts.update((current) => [newPost, ...current]);
-              }
+
+🧭 2. Routing with Guards
+AuthGuard: prevents unauthenticated users from accessing private pages.
+RoleGuard: ensures only admins can access admin routes
+
+⚡ 3. Resolver Guards for Data Prefetching
+Before navigating to a route, Resolvers fetch data to make the user experience smoother:
+
+🎨 4. SweetAlert2 Integration
+Used for confirmation before deleting a post:
+
+🔔 5. Toastr Notifications
+Used to show friendly success and error messages:
+
+---
+🧱 Architecture Highlights
+--- 
+Reusable Components: buttons, and forms.
+Signal-based Data Flow: ensures real-time updates without heavy RxJS streams.
+Guarded Routing: maintains both user experience and application security.
+
+---
+🎯 Conclusion
+----
+This project demonstrates how Angular 20 can be used to build a responsive, reactive, and secure social media platform.
+By combining Signals, Guards, Resolvers, and UI enhancements like SweetAlert2 and ngx-toastr, the app achieves an excellent balance between modern reactivity and professional user experience.
 
 
 
