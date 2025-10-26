@@ -62,10 +62,7 @@ This project demonstrates how Angular 20 can be used to build a responsive, reac
 By combining Signals, Guards, Resolvers, and UI enhancements like SweetAlert2 and ngx-toastr, the app achieves an excellent balance between modern reactivity and professional user experience.
 
 
+## 🚀 Live Demo
 
-
-
-
-
-
+🔗 [View Website](https://social-media-rosy-gamma.vercel.app/login)  
 
